@@ -1,13 +1,14 @@
 #include "lexer.h"
 #include <cctype>
 #include <fmt/core.h>
+#include <stdexcept>
 
 namespace sakura {
 
 namespace elaina {
 
 Lexer::Lexer(std::string_view file_name, std::istream &stream)
-    : file_name_(file_name), stream_(stream) {}
+    : file_name(file_name), stream_(stream) {}
 
 bool Lexer::hasNext() { return peek().type != Token::END_OF_FILE; }
 
@@ -73,8 +74,6 @@ Token Lexer::getToken() {
     return getIdentifier();
   } else if (c == '@') {
     return getCommand();
-  } else if (c == '#') {
-    return getTag();
   } else if (c == '[') {
     return getNameBlock();
   } else if (c == '(') {
@@ -99,7 +98,7 @@ Token Lexer::getToken() {
     return getRelationOperator();
   } else {
     throw std::runtime_error(
-        fmt::format("{}:{}:{}: invalid token", file_name_, row_num_, col_num_));
+        fmt::format("{}:{}:{}: invalid token", file_name, row_num_, col_num_));
   }
 }
 
@@ -123,7 +122,7 @@ Token Lexer::getString() {
   }
   if (reachEOF()) {
     throw std::runtime_error(
-        fmt::format("{}:{}:{}: unterminated string literal", file_name_,
+        fmt::format("{}:{}:{}: unterminated string literal", file_name,
                     row_num_, col_num_));
   }
   getChar();
@@ -146,7 +145,7 @@ Token Lexer::getIdentifier() {
   }
   if (t.empty()) {
     throw std::runtime_error(
-        fmt::format("{}:{}:{}: empty identifier", file_name_, r, c));
+        fmt::format("{}:{}:{}: empty identifier", file_name, r, c));
   }
   return {Token::IDENTIFIER, r, c, t};
 }
@@ -161,24 +160,9 @@ Token Lexer::getCommand() {
   }
   if (t.empty()) {
     throw std::runtime_error(
-        fmt::format("{}:{}:{}: empty command", file_name_, r, c));
+        fmt::format("{}:{}:{}: empty command", file_name, r, c));
   }
   return {Token::COMMAND, r, c, t};
-}
-
-Token Lexer::getTag() {
-  std::string t;
-  std::size_t r = row_num_;
-  std::size_t c = col_num_;
-  getChar();
-  while (!reachEOF() && isword(stream_.peek())) {
-    t.push_back(getChar());
-  }
-  if (t.empty()) {
-    throw std::runtime_error(
-        fmt::format("{}:{}:{}: empty tag", file_name_, r, c));
-  }
-  return {Token::TAG, r, c, t};
 }
 
 Token Lexer::getNameBlock() {
@@ -191,7 +175,7 @@ Token Lexer::getNameBlock() {
   }
   if (reachEOF()) {
     throw std::runtime_error(fmt::format("{}:{}:{}: unterminated name block",
-                                         file_name_, row_num_, col_num_));
+                                         file_name, row_num_, col_num_));
   }
   getChar();
   return {Token::NAME_BLOCK, r, c, t};
@@ -203,7 +187,7 @@ Token Lexer::getAssignOperator() {
   char head = getChar();
   if (getChar() != '=') {
     throw std::runtime_error(fmt::format(
-        "{}:{}:{}: invalid token, you mean '{}=' ?", file_name_, r, c, head));
+        "{}:{}:{}: invalid token, you mean '{}=' ?", file_name, r, c, head));
   }
   return {Token::ASSIGN, r, c, ":="};
 }
@@ -216,7 +200,7 @@ Token Lexer::getEqualOperator() {
   t.push_back(head);
   if (getChar() != '=') {
     throw std::runtime_error(fmt::format(
-        "{}:{}:{}: invalid token, you mean '{}=' ?", file_name_, r, c, head));
+        "{}:{}:{}: invalid token, you mean '{}=' ?", file_name, r, c, head));
   }
   t.push_back('=');
   return {Token::ASSIGN, r, c, t};

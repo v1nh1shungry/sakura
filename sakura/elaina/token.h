@@ -13,7 +13,6 @@ struct Token {
     STRING,
     IDENTIFIER,
     COMMAND,
-    TAG,
     NAME_BLOCK,
     ASSIGN,
     EQUAL,

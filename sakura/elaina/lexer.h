@@ -27,14 +27,15 @@ private:
   Token getString();
   Token getIdentifier();
   Token getCommand();
-  Token getTag();
   Token getNameBlock();
   Token getAssignOperator();
   Token getEqualOperator();
   Token getRelationOperator();
 
+public:
+  const std::string file_name;
+
 private:
-  std::string_view file_name_;
   std::istream &stream_;
   std::size_t row_num_ = 1;
   std::size_t col_num_ = 1;
