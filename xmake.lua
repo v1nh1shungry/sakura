@@ -1,18 +1,18 @@
 add_rules("mode.debug", "mode.release")
 
-add_requires("fmt", "magic_enum")
+add_requires("fmt", "magic_enum", "nlohmann-json")
 set_languages("c++20")
 
 target("elaina")
     set_kind("static")
     add_files("sakura/elaina/*.cpp")
-    add_packages("fmt")
+    add_packages("fmt", "magic_enum")
 
 target("sakura")
     set_kind("binary")
     add_files("sakura/*.cpp")
     add_deps("elaina")
-    add_packages("fmt", "magic_enum")
+    add_packages("fmt", "magic_enum", "nlohmann-json")
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io
