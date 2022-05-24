@@ -203,7 +203,7 @@ Token Lexer::getEqualOperator() {
         "{}:{}:{}: invalid token, you mean '{}=' ?", file_name, r, c, head));
   }
   t.push_back('=');
-  return {Token::ASSIGN, r, c, t};
+  return {Token::EQUAL, r, c, t};
 }
 
 Token Lexer::getRelationOperator() {
