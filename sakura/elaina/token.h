@@ -28,7 +28,7 @@ struct Token {
   std::size_t col_num;
   std::string value;
 
-  static Token eof;
+  static const Token &eof();
 };
 
 } // namespace elaina

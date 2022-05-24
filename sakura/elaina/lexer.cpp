@@ -28,7 +28,7 @@ const Token &Lexer::peek(std::size_t index) {
     while (!reachEOF() && buffer_.size() <= index) {
       buffer_.push_back(getToken());
     }
-    return index < buffer_.size() ? buffer_.back() : Token::eof;
+    return index < buffer_.size() ? buffer_.back() : Token::eof();
   }
 }
 
@@ -59,7 +59,7 @@ void Lexer::consumeComment() {
 Token Lexer::getToken() {
   consumeWhitespace();
   if (reachEOF()) {
-    return Token::eof;
+    return Token::eof();
   }
   char c = stream_.peek();
   if (c == ';') {
