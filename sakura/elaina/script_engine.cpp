@@ -105,7 +105,7 @@ void ScriptEngine::run() {
 
 void ScriptEngine::registerCommand(const std::string &func_name,
                                    std::function<void(ScriptEngine &)> func) {
-  commands_.emplace(func_name, func);
+  commands_[func_name] = func;
 }
 
 int ScriptEngine::popInt() {
