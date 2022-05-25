@@ -16,10 +16,18 @@ nlohmann::json pretty_print(std::unique_ptr<sakura::elaina::Ast> &ast) {
     return dynamic_cast<sakura::elaina::IdentifierAst *>(ast.get())->identifier.value;
   case sakura::elaina::Ast::STRING:
     return dynamic_cast<sakura::elaina::StringAst *>(ast.get())->value;
+  case sakura::elaina::Ast::EXPRESSION: {
+    nlohmann::json j;
+    auto ptr = dynamic_cast<sakura::elaina::ExpressionAst *>(ast.get());
+    j["op"] = ptr->op.value;
+    j["lhs"] = pretty_print(ptr->lhs);
+    j["rhs"] = pretty_print(ptr->rhs);
+    return j;
+  }
   case sakura::elaina::Ast::COMMAND: {
     nlohmann::json j;
     auto ptr = dynamic_cast<sakura::elaina::CommandAst *>(ast.get());
-    j["op"] = ptr->op.value;
+    j["command"] = ptr->command.value;
     for (auto &arg : ptr->args) {
       j["args"].emplace_back(pretty_print(arg));
     }

@@ -46,7 +46,7 @@ std::unique_ptr<Ast> Parser::parseAst() {
 std::unique_ptr<Ast> Parser::parseAssignment() {
   auto res = new CommandAst;
   res->args.emplace_back(new StringAst{lexer_.next().value});
-  res->op = match(Token::ASSIGN);
+  res->command = match(Token::ASSIGN);
   res->args.emplace_back(parseExpr());
   return std::unique_ptr<Ast>{res};
 }
@@ -54,7 +54,7 @@ std::unique_ptr<Ast> Parser::parseAssignment() {
 std::unique_ptr<Ast> Parser::parseCommand() {
   auto res = new CommandAst;
   bool done = false;
-  res->op = lexer_.next();
+  res->command = lexer_.next();
   while (!done) {
     const auto &token = lexer_.peek();
     switch (token.type) {
@@ -90,7 +90,7 @@ std::unique_ptr<Ast> Parser::parseCommand() {
 std::unique_ptr<Ast> Parser::parseDialogue() {
   auto res = new CommandAst;
   auto name_block = lexer_.next();
-  res->op =
+  res->command =
       Token{Token::COMMAND, name_block.row_num, name_block.col_num, "say"};
   res->args.emplace_back(new StringAst{name_block.value});
   res->args.emplace_back(new StringAst{match(Token::STRING).value});
@@ -104,11 +104,11 @@ std::unique_ptr<Ast> join(std::unique_ptr<Ast> left,
   if (tail == nullptr) {
     return left;
   } else {
-    auto ptr = dynamic_cast<CommandAst *>(tail.get());
-    while (ptr->args.size() == 2) {
-      ptr = dynamic_cast<CommandAst *>(ptr->args.front().get());
+    auto ptr = dynamic_cast<ExpressionAst *>(tail.get());
+    while (ptr->lhs != nullptr) {
+      ptr = dynamic_cast<ExpressionAst *>(ptr->lhs.get());
     }
-    ptr->args.emplace(ptr->args.begin(), std::move(left));
+    ptr->lhs = std::move(left);
     return tail;
   }
 }
@@ -153,9 +153,9 @@ std::unique_ptr<Ast> Parser::parseEqualExprTail() {
   const auto &token = lexer_.peek();
   switch (token.type) {
   case Token::EQUAL: {
-    auto ptr = new CommandAst;
+    auto ptr = new ExpressionAst;
     ptr->op = lexer_.next();
-    ptr->args.emplace_back(parseEqualExpr());
+    ptr->rhs = parseEqualExpr();
     return join(std::unique_ptr<Ast>{ptr}, parseEqualExprTail());
   }
   case Token::END_OF_FILE:
@@ -194,9 +194,9 @@ std::unique_ptr<Ast> Parser::parseRelationExprTail() {
   const auto &token = lexer_.peek();
   switch (token.type) {
   case Token::RELATION: {
-    auto ptr = new CommandAst;
+    auto ptr = new ExpressionAst;
     ptr->op = lexer_.next();
-    ptr->args.emplace_back(parseRelationExpr());
+    ptr->rhs = parseRelationExpr();
     return join(std::unique_ptr<Ast>{ptr}, parseRelationExprTail());
   }
   case Token::END_OF_FILE:
@@ -236,9 +236,9 @@ std::unique_ptr<Ast> Parser::parseAddExprTail() {
   const auto &token = lexer_.peek();
   switch (token.type) {
   case Token::ADD: {
-    auto ptr = new CommandAst;
+    auto ptr = new ExpressionAst;
     ptr->op = lexer_.next();
-    ptr->args.emplace_back(parseAddExpr());
+    ptr->rhs = parseAddExpr();
     return join(std::unique_ptr<Ast>{ptr}, parseAddExprTail());
   }
   case Token::END_OF_FILE:
@@ -281,9 +281,9 @@ std::unique_ptr<Ast> Parser::parseMulExprTail() {
   const auto &token = lexer_.peek();
   switch (token.type) {
   case Token::MUL: {
-    auto ptr = new CommandAst;
+    auto ptr = new ExpressionAst;
     ptr->op = lexer_.next();
-    ptr->args.emplace_back(parseMulExpr());
+    ptr->rhs = parseMulExpr();
     return join(std::unique_ptr<Ast>{ptr}, parseMulExprTail());
   }
   case Token::END_OF_FILE:

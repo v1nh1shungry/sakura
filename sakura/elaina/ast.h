@@ -11,7 +11,7 @@ namespace sakura {
 namespace elaina {
 
 struct Ast {
-  enum Type { INTEGER, STRING, IDENTIFIER, COMMAND };
+  enum Type { INTEGER, STRING, IDENTIFIER, EXPRESSION, COMMAND };
   virtual ~Ast() = default;
   virtual Type type() = 0;
 };
@@ -34,9 +34,16 @@ struct IdentifierAst : public Ast {
   Token identifier;
 };
 
+struct ExpressionAst : public Ast {
+  Type type() override { return EXPRESSION; }
+  Token op;
+  std::unique_ptr<Ast> lhs;
+  std::unique_ptr<Ast> rhs;
+};
+
 struct CommandAst : public Ast {
   Type type() override { return COMMAND; }
-  Token op;
+  Token command;
   std::vector<std::unique_ptr<Ast>> args;
 };
 
