@@ -17,7 +17,7 @@ public:
   std::vector<std::unique_ptr<Ast>> parse();
 
 private:
-  std::string match(Token::Type type);
+  Token match(Token::Type type);
   std::unique_ptr<Ast> parseAst();
   std::unique_ptr<Ast> parseAssignment();
   std::unique_ptr<Ast> parseCommand();

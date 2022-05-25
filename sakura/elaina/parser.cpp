@@ -17,10 +17,10 @@ std::vector<std::unique_ptr<Ast>> Parser::parse() {
   return res;
 }
 
-std::string Parser::match(Token::Type type) {
+Token Parser::match(Token::Type type) {
   auto token = lexer_.next();
   if (token.type == type) {
-    return token.value;
+    return token;
   }
   throw std::runtime_error(fmt::format(
       "{}:{}:{}: expect {}, but received '{}'", lexer_.file_name, token.row_num,
@@ -45,9 +45,8 @@ std::unique_ptr<Ast> Parser::parseAst() {
 
 std::unique_ptr<Ast> Parser::parseAssignment() {
   auto res = new CommandAst;
-  res->op = "define";
   res->args.emplace_back(new StringAst{lexer_.next().value});
-  match(Token::ASSIGN);
+  res->op = match(Token::ASSIGN);
   res->args.emplace_back(parseExpr());
   return std::unique_ptr<Ast>{res};
 }
@@ -55,7 +54,7 @@ std::unique_ptr<Ast> Parser::parseAssignment() {
 std::unique_ptr<Ast> Parser::parseCommand() {
   auto res = new CommandAst;
   bool done = false;
-  res->op = lexer_.next().value;
+  res->op = lexer_.next();
   while (!done) {
     const auto &token = lexer_.peek();
     switch (token.type) {
@@ -63,6 +62,7 @@ std::unique_ptr<Ast> Parser::parseCommand() {
     case Token::LPAREN:
       res->args.emplace_back(parseExpr());
       break;
+    case Token::END_OF_FILE:
     case Token::COMMAND:
     case Token::NAME_BLOCK:
       done = true;
@@ -89,9 +89,11 @@ std::unique_ptr<Ast> Parser::parseCommand() {
 
 std::unique_ptr<Ast> Parser::parseDialogue() {
   auto res = new CommandAst;
-  res->op = "say";
-  res->args.emplace_back(new StringAst{lexer_.next().value});
-  res->args.emplace_back(new StringAst{match(Token::STRING)});
+  auto name_block = lexer_.next();
+  res->op =
+      Token{Token::COMMAND, name_block.row_num, name_block.col_num, "say"};
+  res->args.emplace_back(new StringAst{name_block.value});
+  res->args.emplace_back(new StringAst{match(Token::STRING).value});
   return std::unique_ptr<Ast>{res};
 }
 
@@ -152,7 +154,7 @@ std::unique_ptr<Ast> Parser::parseEqualExprTail() {
   switch (token.type) {
   case Token::EQUAL: {
     auto ptr = new CommandAst;
-    ptr->op = lexer_.next().value;
+    ptr->op = lexer_.next();
     ptr->args.emplace_back(parseEqualExpr());
     return join(std::unique_ptr<Ast>{ptr}, parseEqualExprTail());
   }
@@ -162,6 +164,7 @@ std::unique_ptr<Ast> Parser::parseEqualExprTail() {
   case Token::NAME_BLOCK:
   case Token::IDENTIFIER:
   case Token::STRING:
+  case Token::INTEGER:
     return nullptr;
   default:
     throw std::runtime_error(fmt::format("{}:{}:{}: unexpected token '{}'",
@@ -192,7 +195,7 @@ std::unique_ptr<Ast> Parser::parseRelationExprTail() {
   switch (token.type) {
   case Token::RELATION: {
     auto ptr = new CommandAst;
-    ptr->op = lexer_.next().value;
+    ptr->op = lexer_.next();
     ptr->args.emplace_back(parseRelationExpr());
     return join(std::unique_ptr<Ast>{ptr}, parseRelationExprTail());
   }
@@ -203,6 +206,7 @@ std::unique_ptr<Ast> Parser::parseRelationExprTail() {
   case Token::COMMAND:
   case Token::NAME_BLOCK:
   case Token::STRING:
+  case Token::INTEGER:
     return nullptr;
   default:
     throw std::runtime_error(fmt::format("{}:{}:{}: unexpected token '{}'",
@@ -233,7 +237,7 @@ std::unique_ptr<Ast> Parser::parseAddExprTail() {
   switch (token.type) {
   case Token::ADD: {
     auto ptr = new CommandAst;
-    ptr->op = lexer_.next().value;
+    ptr->op = lexer_.next();
     ptr->args.emplace_back(parseAddExpr());
     return join(std::unique_ptr<Ast>{ptr}, parseAddExprTail());
   }
@@ -245,6 +249,7 @@ std::unique_ptr<Ast> Parser::parseAddExprTail() {
   case Token::COMMAND:
   case Token::NAME_BLOCK:
   case Token::STRING:
+  case Token::INTEGER:
     return nullptr;
   default:
     throw std::runtime_error(fmt::format("{}:{}:{}: unexpected token '{}'",
@@ -259,7 +264,7 @@ std::unique_ptr<Ast> Parser::parseMulExpr() {
   case Token::INTEGER:
     return std::unique_ptr<Ast>{new IntegerAst{token.value}};
   case Token::IDENTIFIER:
-    return std::unique_ptr<Ast>{new IdentifierAst{token.value}};
+    return std::unique_ptr<Ast>{new IdentifierAst{token}};
   case Token::LPAREN: {
     auto res = parseExpr();
     match(Token::RPAREN);
@@ -277,7 +282,7 @@ std::unique_ptr<Ast> Parser::parseMulExprTail() {
   switch (token.type) {
   case Token::MUL: {
     auto ptr = new CommandAst;
-    ptr->op = lexer_.next().value;
+    ptr->op = lexer_.next();
     ptr->args.emplace_back(parseMulExpr());
     return join(std::unique_ptr<Ast>{ptr}, parseMulExprTail());
   }
@@ -290,6 +295,7 @@ std::unique_ptr<Ast> Parser::parseMulExprTail() {
   case Token::COMMAND:
   case Token::NAME_BLOCK:
   case Token::STRING:
+  case Token::INTEGER:
     return nullptr;
   default:
     throw std::runtime_error(fmt::format("{}:{}:{}: unexpected token '{}'",

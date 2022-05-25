@@ -1,6 +1,7 @@
 #ifndef SAKURA_ELAINA_AST_H
 #define SAKURA_ELAINA_AST_H
 
+#include "token.h"
 #include <memory>
 #include <string>
 #include <vector>
@@ -28,14 +29,14 @@ struct StringAst : public Ast {
 };
 
 struct IdentifierAst : public Ast {
-  explicit IdentifierAst(const std::string &value) : value(value) {}
+  explicit IdentifierAst(const Token &value) : identifier(value) {}
   Type type() override { return IDENTIFIER; }
-  std::string value;
+  Token identifier;
 };
 
 struct CommandAst : public Ast {
   Type type() override { return COMMAND; }
-  std::string op;
+  Token op;
   std::vector<std::unique_ptr<Ast>> args;
 };
 

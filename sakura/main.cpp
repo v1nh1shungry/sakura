@@ -13,13 +13,13 @@ nlohmann::json pretty_print(std::unique_ptr<sakura::elaina::Ast> &ast) {
   case sakura::elaina::Ast::INTEGER:
     return dynamic_cast<sakura::elaina::IntegerAst *>(ast.get())->value;
   case sakura::elaina::Ast::IDENTIFIER:
-    return dynamic_cast<sakura::elaina::IdentifierAst *>(ast.get())->value;
+    return dynamic_cast<sakura::elaina::IdentifierAst *>(ast.get())->identifier.value;
   case sakura::elaina::Ast::STRING:
     return dynamic_cast<sakura::elaina::StringAst *>(ast.get())->value;
   case sakura::elaina::Ast::COMMAND: {
     nlohmann::json j;
     auto ptr = dynamic_cast<sakura::elaina::CommandAst *>(ast.get());
-    j["op"] = ptr->op;
+    j["op"] = ptr->op.value;
     for (auto &arg : ptr->args) {
       j["args"].emplace_back(pretty_print(arg));
     }
