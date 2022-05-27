@@ -1,6 +1,6 @@
 add_rules("mode.debug", "mode.release")
 
-add_requires("fmt", "magic_enum", "nlohmann-json", "sfml")
+add_requires("fmt", "magic_enum", "nlohmann_json", "sfml")
 set_languages("c++20")
 
 target("elaina")
