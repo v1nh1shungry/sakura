@@ -68,7 +68,7 @@ ResourceManager::loadFont(const std::string &file_name) {
 //     "first": PushButton,
 //     "second": PushButton
 //   },
-//   "widget": [
+//   "widgets": [
 //     <optional>
 //   ]
 // }

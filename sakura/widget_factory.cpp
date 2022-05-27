@@ -86,7 +86,7 @@ WidgetFactory::createPushButton(const nlohmann::json &config,
   button->shape.setPosition(
       {shape["left"].get<float>(), shape["top"].get<float>()});
   button->shape.setSize(
-      {shape["left"].get<float>(), shape["top"].get<float>()});
+      {shape["width"].get<float>(), shape["height"].get<float>()});
   if (!shape["texture"].is_null()) {
     button->shape.setTexture(
         resources_.loadTexture(shape["texture"].get<std::string>()).get());
@@ -146,7 +146,7 @@ WidgetFactory::createDialog(const nlohmann::json &config,
   dialog->name.setPosition(
       {name["left"].get<float>(), name["top"].get<float>()});
   dialog->name.setFont(
-      *resources_.loadFont(global["font_size"].get<std::string>()));
+      *resources_.loadFont(global["font_face"].get<std::string>()));
   dialog->name.setCharacterSize(global["font_size"].get<int>());
 
   for (auto &child : config["children"]) {

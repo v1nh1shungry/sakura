@@ -6,4 +6,4 @@ build/
 .DS_Store
 
 # Debug
-scripts/
+demo/

@@ -78,6 +78,21 @@ ScriptEngine::ScriptEngine() {
                     int lhs = this->popInt();
                     this->pushInt(lhs / rhs);
                   }});
+  registerCommand("if",
+                  std::function<void(ScriptEngine &)>{[this](ScriptEngine &) {
+                    auto alt = this->popString();
+                    auto conseq = this->popString();
+                    auto cond = this->popInt();
+                    if (cond) {
+                      this->loadScript(conseq);
+                    } else {
+                      this->loadScript(alt);
+                    }
+                  }});
+  registerCommand("jump",
+                  std::function<void(ScriptEngine &)>{[this](ScriptEngine &) {
+                    this->loadScript(this->popString(), -1);
+                  }});
 }
 
 void ScriptEngine::loadScript(const std::string &file_name, std::size_t index) {

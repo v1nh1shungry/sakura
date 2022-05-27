@@ -1,23 +1,20 @@
-#include "elaina/script_engine.h"
+#include "engine.h"
 #include <fmt/core.h>
 #include <iostream>
+#include <string>
 
 int main(int argc, char *argv[]) {
-  using namespace sakura::elaina;
-  ScriptEngine se;
-  se.registerCommand("say",
-                     std::function<void(ScriptEngine &)>{[](ScriptEngine &se) {
-                       std::string msg = se.popString();
-                       std::string name = se.popString();
-                       std::cerr << fmt::format("{} says \"{}\"\n", name, msg);
-                     }});
-  se.registerCommand("printInt",
-                     std::function<void(ScriptEngine &)>{[](ScriptEngine &se) {
-                       std::cerr << se.popInt() << std::endl;
-                     }});
-  se.loadScript("scripts/example.ela");
-  while (true) {
-    se.run();
+  std::string dir = "sakura";
+  if (argc == 2) {
+    dir = argv[1];
   }
+  if (!std::filesystem::is_directory(dir)) {
+    std::cerr << fmt::format("{}: no such directory", dir);
+    return -1;
+  }
+
+  sakura::Engine engine(dir);
+  engine.run();
+
   return 0;
 }
