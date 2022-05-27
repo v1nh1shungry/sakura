@@ -25,7 +25,9 @@ Engine::Engine(const std::filesystem::path &dir) {
   script_engine_.registerCommand(
       "bgm", std::function<void(elaina::ScriptEngine &)>{
                  [this](elaina::ScriptEngine &se) {
-                   bgm_->stop();
+                   if (bgm_ != nullptr) {
+                     bgm_->stop();
+                   }
                    bgm_ = resource_manager_.loadMusic(se.popString());
                    bgm_->setLoop(true);
                    bgm_->play();
