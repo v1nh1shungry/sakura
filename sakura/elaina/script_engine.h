@@ -3,6 +3,7 @@
 
 #include "ast.h"
 #include "object.h"
+#include <filesystem>
 #include <functional>
 #include <stack>
 #include <string>
@@ -28,6 +29,7 @@ private:
   void evaluate(const std::unique_ptr<Ast> &ast);
 
 public:
+  std::filesystem::path script_dir_prefix;
   bool blocked = false;
   std::unordered_map<std::string, int> variables;
 

@@ -1,4 +1,5 @@
 #include "script_engine.h"
+#include "../utility.h"
 #include "lexer.h"
 #include "parser.h"
 #include <fmt/core.h>
@@ -82,7 +83,7 @@ ScriptEngine::ScriptEngine() {
 void ScriptEngine::loadScript(const std::string &file_name, std::size_t index) {
   auto it = scripts_.find(file_name);
   if (it == scripts_.end()) {
-    std::ifstream file(file_name);
+    std::ifstream file(concat_if_relative(script_dir_prefix, file_name));
     if (!file.is_open()) {
       throw std::runtime_error(fmt::format("{}: can't open file", file_name));
     }

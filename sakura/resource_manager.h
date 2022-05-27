@@ -13,7 +13,6 @@ namespace sakura {
 
 class ResourceManager {
 public:
-  ResourceManager();
   std::shared_ptr<sf::Texture> loadTexture(const std::string &file_name);
   std::shared_ptr<sf::Music> loadMusic(const std::string &file_name);
   std::shared_ptr<sf::Font> loadFont(const std::string &file_name);

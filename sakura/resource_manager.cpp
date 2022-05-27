@@ -1,4 +1,5 @@
 #include "resource_manager.h"
+#include "utility.h"
 #include "widget_factory.h"
 #include <fmt/core.h>
 #include <fstream>
@@ -6,23 +7,6 @@
 #include <stdexcept>
 
 namespace sakura {
-
-ResourceManager::ResourceManager() {
-  prefixes["texture"] = "resources/texture";
-  prefixes["font"] = "resources/font";
-  prefixes["music"] = "resources/music";
-  prefixes["scene"] = "scenes";
-}
-
-namespace {
-
-std::string concat_if_relative(const std::filesystem::path &prefix,
-                               const std::string &path) {
-  return std::filesystem::path{path}.is_relative() ? (prefix / path).string()
-                                                   : path;
-}
-
-} // namespace
 
 std::shared_ptr<sf::Texture>
 ResourceManager::loadTexture(const std::string &file_name) {

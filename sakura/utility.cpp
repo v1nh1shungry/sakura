@@ -9,4 +9,10 @@ std::wstring utf8ToWstring(const std::string &str) {
   return wc.from_bytes(str);
 }
 
+std::string concat_if_relative(const std::filesystem::path &prefix,
+                               const std::string &path) {
+  return std::filesystem::path{path}.is_relative() ? (prefix / path).string()
+                                                   : path;
+}
+
 } // namespace sakura
