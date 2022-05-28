@@ -32,13 +32,20 @@ Engine::Engine(const std::filesystem::path &dir) {
                    bgm_->setLoop(true);
                    bgm_->play();
                  }});
-  script_engine_.registerCommand("pauseBgm", std::function<void(elaina::ScriptEngine &)> {
-    [this](elaina::ScriptEngine &se) {
-      if (bgm_ != nullptr) {
-        bgm_->pause();
-      }
-    }
-  });
+  script_engine_.registerCommand("pauseBgm",
+                                 std::function<void(elaina::ScriptEngine &)>{
+                                     [this](elaina::ScriptEngine &se) {
+                                       if (bgm_ != nullptr) {
+                                         bgm_->pause();
+                                       }
+                                     }});
+  script_engine_.registerCommand("stopBgm",
+                                 std::function<void(elaina::ScriptEngine &)>{
+                                     [this](elaina::ScriptEngine &se) {
+                                       if (bgm_ != nullptr) {
+                                         bgm_->stop();
+                                       }
+                                     }});
   script_engine_.registerCommand(
       "background",
       std::function<void(elaina::ScriptEngine &)>{
