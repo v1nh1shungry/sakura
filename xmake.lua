@@ -3,7 +3,7 @@ add_rules("mode.debug", "mode.release")
 add_requires("fmt", "magic_enum", "nlohmann_json", "sfml")
 set_languages("c++20")
 
-if is_plat("mingw") then
+if is_plat("mingw") and is_mode("release") then
     add_ldflags("-mwindows")
 end
 
