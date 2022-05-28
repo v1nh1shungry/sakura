@@ -6,10 +6,16 @@ void Scene::render(sf::RenderTarget &render_target) const {
   for (auto &widget : widgets) {
     widget->render(render_target);
   }
-  main_dialog->render(render_target);
+  if (main_dialog != nullptr) {
+    main_dialog->render(render_target);
+  }
   if (selected) {
-    selectors.first->render(render_target);
-    selectors.second->render(render_target);
+    if (selectors.first) {
+      selectors.first->render(render_target);
+    }
+    if (selectors.second) {
+      selectors.second->render(render_target);
+    }
   }
 }
 
@@ -41,6 +47,10 @@ void Scene::select(const std::string &first_selector_text,
                    const std::string &first_selector_action,
                    const std::string &second_selector_text,
                    const std::string &second_selector_action) {
+  if (selectors.first == nullptr || selectors.second == nullptr) {
+    // TODO: say something
+    return;
+  }
   selected = true;
   selectors.first->setText(first_selector_text);
   selectors.first->actions["clicked"] = first_selector_action;

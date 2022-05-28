@@ -13,7 +13,7 @@ Engine::Engine(const std::filesystem::path &dir) {
                                  std::function<void(elaina::ScriptEngine &)>{
                                      [this](elaina::ScriptEngine &se) {
                                        if (scene_->main_dialog == nullptr) {
-                                         // TODO
+                                         // TODO: say something
                                        } else {
                                          std::string msg = se.popString();
                                          std::string name = se.popString();
