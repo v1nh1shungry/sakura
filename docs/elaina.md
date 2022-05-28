@@ -34,9 +34,9 @@ Text surrounded by `"` is a string literal. Attention, there are no escape chara
 world!"
 ```
 
-## Identifier
+## Identifier and variable
 
-An identifier starts with a `$`. It is used to name a variable.
+An identifier starts with a `$`. It is used to name a variable. A variable can only store an integer. All variables are in global scope. You can access excatly the same variable in all script files.
 
 ```
 ; This is an identifier
@@ -155,4 +155,13 @@ Here are all commands provided by the system.
 @select "Yes" "a.ela" "No" "b.ela"
 
 ; Anything below @select will never be executed for we will jump to another script
+
+; You can set up a variable
+$love := 0
+
+; Change it
+$love := $love + 1
+
+; Determine the direction of the plot by the value of the variable
+@if $love > 0 "happy_ending.ela" "bad_ending.ela"
 ```
