@@ -1,0 +1,84 @@
+@scene "normal.json"
+@background "outdoor.png"
+[]
+"（甩门离开了家）"
+[]
+"（背后传来阿嬷的声音：“你这个孩子怎么这样子！”）"
+
+@background "coffeenet.png"
+[]
+"(离家后约上好友来到了网吧，开始联机打电动。)"
+
+@addSprite "AWei" "AWei_2.png" 0 0
+[阿伟]
+"他超废的欸！"
+@rmSprite  "AWei"
+
+@addSprite "BinBin" "BinBin.png" 680 0
+[彬彬]
+"我知道啊，之前我就干掉他过。二班那个啊。"
+@rmSprite  "BinBin"
+
+@addSprite "AWei" "AWei_2.png" 0 0
+[阿伟]
+"他每次都被我洗战绩欸！"
+@rmSprite  "AWei"
+
+@addSprite "shadow" "shadow.png" 0 0
+[？？？]
+"……"
+@rmSprite "shadow"
+
+@background "game.png"
+[]
+"接着是一段悠闲的打游戏时光"
+
+[彬彬]
+"啊我死了啦，烦诶，我不要玩了。"
+
+[阿伟]
+"怎么又这个样子？"
+
+[彬彬]
+"不想玩了啦！"
+
+@background "coffeenet.png"
+@addSprite "AWei" "AWei_2.png" 0 0
+[阿伟]
+"喂，彬彬，我们两个都没钱了欸，我好饿哦！你要干嘛啊？"
+@rmSprite  "AWei"
+
+@addSprite "BinBin" "BinBin.png" 680 0
+[彬彬]
+"没有钱我们就只能回家。"
+@rmSprite  "BinBin"
+
+@addSprite "AWei" "AWei_2.png" 0 0
+[阿伟]
+"拜托我才不要回家咧，我阿嬷超凶的欸！"
+@rmSprite  "AWei"
+
+[]
+"(拍了拍彬彬的肩膀。)"
+
+@addSprite "AWei" "AWei_2.png" 0 0
+[阿伟]
+"去住你家啊？"
+@rmSprite  "AWei"
+
+@addSprite "BinBin" "BinBin.png" 680 0
+[彬彬]
+"不行啦，我自己都自身难保了，而且我爸会揍我。"
+@rmSprite  "BinBin"
+
+@addSprite "shadow" "shadow.png" 680 0
+[？？？]
+"……"
+@rmSprite "shadow"
+
+@addSprite "JieGe" "JieGe.png" 680 0
+[？？？]
+"欸不好意思，我刚听到你们两个说肚子饿，我这里刚好有个面包，我还不饿，请你们吃。"
+@rmSprite  "JieGe"
+
+@select "接过面包" "second.ela" "果断拒绝" "end_1.ela"

@@ -1,0 +1,42 @@
+@scene "normal.json"
+
+@background "coffeenet.png"
+
+@addSprite "AWei" "AWei_2.png" 0 0
+@addSprite "BinBin" "BinBin.png" 550 0
+[阿伟&彬彬]
+"先吃先吃。"
+@rmSprite "AWei"
+@rmSprite "BinBin"
+
+@addSprite "JieGe" "JieGe.png" 680 0
+[？？？]
+"对了，我叫阿杰，我也常来这里玩，他们都叫我杰哥。"
+@rmSprite "JieGe"
+
+@addSprite "AWei" "AWei_2.png" 0 0
+@addSprite "BinBin" "BinBin.png" 550 0
+[阿伟&彬彬]
+"杰哥好！"
+@rmSprite "AWei"
+@rmSprite "BinBin"
+
+@addSprite "JieGe" "JieGe.png" 680 0
+[杰哥]
+"你们好，我一个人住，我的房子还蛮大的,我经常帮助一些翘家的人，
+欢迎你们来我家玩，玩累了就直接睡觉，没问题的。"
+@rmSprite "JieGe"
+
+@background "chatting.png"
+[阿伟]
+"你觉得嘞？"
+[彬彬]
+"我觉得怪怪的，看起来就是个很奇怪的人欸。不要去不要去。"
+
+@addSprite "JieGe" "JieGe.png" 680 0
+[杰哥]
+"如果你们不要来的话，也没有关系，如果要来的话，
+我等一下可以带你们去超商，买一些好吃的哦。"
+@rmSprite "JieGe"
+
+@select "欣然接受" "third.ela" "拒绝" "end_1.ela"

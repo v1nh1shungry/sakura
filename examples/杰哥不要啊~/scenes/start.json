@@ -1,0 +1,29 @@
+{
+  "font_face": "simhei.ttf",
+  "font_size": 24,
+  "selector": {
+    "first": {
+      "class": "push_button",
+      "shape": {
+        "left": 245,
+        "top": 300,
+        "width": 790,
+        "height": 35,
+        "texture": "button.png"
+      },
+      "actions": {}
+    },
+    "second": {
+      "class": "push_button",
+      "shape": {
+        "left": 245,
+        "top": 400,
+        "width": 790,
+        "height": 35,
+        "texture": "button.png"
+      },
+      "actions": {}
+    }
+  },
+  "widgets": []
+}

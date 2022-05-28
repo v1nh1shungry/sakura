@@ -1,0 +1,46 @@
+@scene "normal.json"
+@background "null.png"
+[]
+"(你叫阿伟，一个普通的学生。)"
+[]
+"(这天，你在家里大厅里打游戏，此时阿嬷从自己房间中走出。)"
+
+@background "home.png"
+
+@addSprite "AWei" "AWei.png" 0 0
+[阿伟]
+"弱欸，拜托你很弱欸，你现在知道谁是老大了喔？"
+@rmSprite  "AWei"
+
+@addSprite "AMo" "AMo.png" 680 0
+[阿嬷]
+"阿伟你又在玩电动哦，休息一下吧？去看个书好不好？"
+@rmSprite  "AMo"
+
+@addSprite "AWei" "AWei.png" 0 0
+[阿伟] 
+"烦内！"
+@rmSprite  "AWei"
+
+@addSprite "AMo" "AMo.png" 680 0
+[阿嬷]
+"我在跟你讲话你有没有听到？！"
+@rmSprite  "AMo"
+
+@addSprite "AWei" "AWei.png" 0 0
+[阿伟]
+"你不要烦好不好！"
+@rmSprite  "AWei"
+
+@addSprite "AMo" "AMo.png" 680 0
+[阿嬷]
+"我才讲你两句你就说我烦！我只希望你能够好好用功读书，
+整天只看到你在这边打电动！"
+@rmSprite  "AMo"
+
+@addSprite "AWei" "AWei.png" 0 0
+[阿伟]
+"死了啦！都你害的啦，拜托！"
+@rmSprite  "AWei"
+
+@select "离家出走" "first.ela" "去房间学习" "study.ela"

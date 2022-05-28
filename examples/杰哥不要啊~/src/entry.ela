@@ -1,0 +1,5 @@
+@scene "start.json"
+
+@background "start.png"
+@bgm "bgm.flac"
+@select "开始游戏" "introduction.ela" "关于" "about.ela"

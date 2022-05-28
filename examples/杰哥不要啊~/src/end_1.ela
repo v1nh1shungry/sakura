@@ -1,0 +1,9 @@
+@scene "normal.json"
+
+@background "null.png"
+[]
+"(结局：逃过一“杰”)"
+[]
+"(恭喜解锁了好结局！感谢游玩本demo！)"
+
+@jump "about.ela"

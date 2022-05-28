@@ -1,0 +1,15 @@
+{
+    "name": "杰哥不要啊~",
+    "window": {
+        "width": 1280,
+        "height": 800,
+		"icon": "resources/icon.png"
+    },
+    "prefixes": {
+        "texture": "resources/texture",
+        "music": "resources/music",
+        "font": "resources/font",
+        "scene": "scenes",
+        "script": "src"
+    }
+}

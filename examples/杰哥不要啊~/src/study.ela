@@ -1,0 +1,9 @@
+@scene "normal.json"
+
+@background "null.png"
+[]
+"(好烦！根本不想学习)"
+[]
+"(出门吧)"
+
+@jump "first.ela"

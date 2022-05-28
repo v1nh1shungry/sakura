@@ -1,0 +1,48 @@
+{
+    "font_face": "simhei.ttf",
+    "font_size": 24,
+    "main_dialog": {
+        "class": "dialog",
+        "shape": {
+            "left": 0,
+            "top": 615,
+            "width": 1280,
+            "height": 185,
+            "texture": "def.png"
+        },
+        "text": {
+            "left": 300,
+            "top": 655
+        },
+        "name": {
+            "left": 100,
+            "top": 620
+        },
+        "children": []
+    },
+    "selector": {
+        "first": {
+            "class": "push_button",
+            "shape": {
+                "left": 245,
+                "top": 300,
+                "width": 790,
+                "height": 35,
+                "texture": "button.png"
+            },
+          "actions": {}
+        },
+        "second": {
+            "class": "push_button",
+            "shape": {
+                "left": 245,
+                "top": 400,
+                "width": 790,
+                "height": 35,
+                "texture": "button.png"
+            },
+            "actions": {}
+        }
+    },
+    "widgets": []
+}

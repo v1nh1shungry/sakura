@@ -1,0 +1,4 @@
+@scene "start.json"
+
+@bgm "bgm.flac"
+@background "about.png"

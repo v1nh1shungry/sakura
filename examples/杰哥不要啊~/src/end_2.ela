@@ -1,0 +1,13 @@
+@scene "normal.json"
+
+@background "BinSleep.png"
+[]
+"(你叫醒了彬彬，两个人一起离开了)"
+
+@background "outdoor.png"
+[]
+"(结局：悬崖勒马)"
+[]
+"(恭喜解锁了好结局！感谢游玩本demo！)"
+
+@jump "about.ela"
