@@ -17,11 +17,7 @@ WidgetFactory::WidgetFactory(ResourceManager &resources)
 //     "height": number,
 //     "texture": <optional> string
 //   },
-//   "text": <optional> {
-//     "left": number,
-//     "top": number,
-//     "content": <optional> string
-//   },
+//   "text": <optional> string,
 //   "actions": {
 //     <optional> "clicked": string
 //   }
@@ -81,7 +77,6 @@ WidgetFactory::createPushButton(const nlohmann::json &config,
     throw std::runtime_error(
         "<Anonymous PushButton>: expects shape configuration");
   }
-  auto text = config["text"];
 
   button->shape.setPosition(
       {shape["left"].get<float>(), shape["top"].get<float>()});
@@ -92,15 +87,8 @@ WidgetFactory::createPushButton(const nlohmann::json &config,
         resources_.loadTexture(shape["texture"].get<std::string>()).get());
   }
 
-  if (!text.is_null()) {
-    button->text.setPosition(
-        {text["left"].get<float>(), text["top"].get<float>()});
-    button->text.setFont(
-        *resources_.loadFont(global["font_face"].get<std::string>()));
-    button->text.setCharacterSize(global["font_size"].get<int>());
-    if (!text["content"].is_null()) {
-      button->setText(text["content"].get<std::string>());
-    }
+  if (config["text"].is_string()) {
+    button->setText(config["text"].get<std::string>());
   }
 
   for (auto &action : config["actions"].items()) {

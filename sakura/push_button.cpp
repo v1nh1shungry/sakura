@@ -30,6 +30,12 @@ std::string PushButton::on(const sf::Event &event) const {
 
 void PushButton::setText(const std::string &text) {
   this->text.setString(utf8ToWstring(text));
+  auto text_size = this->text.getGlobalBounds();
+  auto button_size = shape.getSize();
+  auto button_position = shape.getPosition();
+  auto x = button_position.x + (button_size.x - text_size.width) / 2;
+  auto y = button_position.y + (button_size.y - text_size.height) / 2;
+  this->text.setPosition(x, y);
 }
 
 } // namespace sakura
