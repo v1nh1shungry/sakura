@@ -119,7 +119,7 @@ Here are all commands provided by the system.
 
 * **@bacground [image file path]**: set the specified image as background.
 * **@bgm [bgm file path]**: set the specified music as bgm.
-* **@pauseBgm [bgm file path]**: pause the specified bgm.
+* **@pauseBgm**: pause the bgm.
 * **@scene [scene config file path]**
 * **@addSprite [name] [texture file path] [left] [top]**: add a sprite. You should name the sprite so that you can remove it latter.
 * **@rmSprite [name]**
