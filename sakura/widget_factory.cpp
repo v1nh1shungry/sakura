@@ -87,6 +87,9 @@ WidgetFactory::createPushButton(const nlohmann::json &config,
         resources_.loadTexture(shape["texture"].get<std::string>()).get());
   }
 
+  button->text.setFont(
+      *resources_.loadFont(global["font_face"].get<std::string>()));
+  button->text.setCharacterSize(global["font_size"].get<int>());
   if (config["text"].is_string()) {
     button->setText(config["text"].get<std::string>());
   }
