@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "utility.h"
 #include <fmt/core.h>
 #include <fstream>
 #include <nlohmann/json.hpp>
@@ -125,7 +126,7 @@ void Engine::loadProject() {
     auto window = config["window"];
     auto width = window["width"].get<unsigned>();
     auto height = window["height"].get<unsigned>();
-    window_.create(sf::VideoMode(width, height), config["name"],
+    window_.create(sf::VideoMode(width, height), utf8ToWstring(config["name"]),
                    sf::Style::Titlebar | sf::Style::Close);
     background_.setSize(
         {static_cast<float>(width), static_cast<float>(height)});
