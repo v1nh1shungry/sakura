@@ -159,6 +159,18 @@ void Engine::handle(const sf::Event &event) {
     }
     break;
   }
+  case sf::Event::KeyPressed: {
+    switch (event.key.code) {
+    case sf::Keyboard::Space:
+    case sf::Keyboard::Enter:
+      if (!scene_->selected) {
+        script_engine_.blocked = false;
+      }
+      break;
+    default:
+      break;
+    }
+  }
   default:
     break;
   }
