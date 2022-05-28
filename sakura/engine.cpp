@@ -111,9 +111,15 @@ void Engine::loadProject() {
     auto window = config["window"];
     auto width = window["width"].get<unsigned>();
     auto height = window["height"].get<unsigned>();
-    window_.create(sf::VideoMode(width, height), config["name"]);
+    window_.create(sf::VideoMode(width, height), config["name"],
+                   sf::Style::Titlebar | sf::Style::Close);
     background_.setSize(
         {static_cast<float>(width), static_cast<float>(height)});
+    if (window["icon"].is_string()) {
+      sf::Image icon;
+      icon.loadFromFile(window["icon"]);
+      window_.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    }
   }
   if (!config["prefixes"].is_null()) {
     for (auto &prefix : config["prefixes"].items()) {
