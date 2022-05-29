@@ -90,21 +90,36 @@ ResourceManager::loadScene(const std::string &file_name) {
   file >> config;
 
   std::shared_ptr<Scene> scene = std::make_shared<Scene>();
-  if (config["font_face"].is_null()) {
+
+  if (!exists<nlohmann::json::value_t::string>(config, "font_face")) {
     throw std::runtime_error(
         fmt::format("{}: expects font_face configuration", file_name));
   }
-  if (config["font_size"].is_null()) {
+
+  if (!exists<nlohmann::json::value_t::number_integer>(config, "font_size")) {
     config["font_size"] = 24;
   }
-  scene->main_dialog = std::unique_ptr<Dialog>{dynamic_cast<Dialog *>(
-      factory.from(config["main_dialog"], config).release())};
-  scene->selectors.first =
-      std::unique_ptr<PushButton>{dynamic_cast<PushButton *>(
-          factory.from(config["selector"]["first"], config).release())};
-  scene->selectors.second =
-      std::unique_ptr<PushButton>{dynamic_cast<PushButton *>(
-          factory.from(config["selector"]["second"], config).release())};
+
+  if (exists<nlohmann::json::value_t::object>(config, "main_dialog")) {
+    scene->main_dialog = std::unique_ptr<Dialog>{dynamic_cast<Dialog *>(
+        factory.from(config["main_dialog"], config).release())};
+  }
+
+  if (exists<nlohmann::json::value_t::object>(config, "selector")) {
+    auto selector = config["selector"];
+    if (!exists<nlohmann::json::value_t::object>(selector, "first") ||
+        !exists<nlohmann::json::value_t::object>(selector, "second")) {
+      throw std::runtime_error(
+          fmt::format("{}: expects both selectors configuration", file_name));
+    }
+    scene->selectors.first =
+        std::unique_ptr<PushButton>{dynamic_cast<PushButton *>(
+            factory.from(selector["first"], config).release())};
+    scene->selectors.second =
+        std::unique_ptr<PushButton>{dynamic_cast<PushButton *>(
+            factory.from(selector["second"], config).release())};
+  }
+
   for (auto &widget : config["widgets"]) {
     scene->widgets.push_back(factory.from(widget, config));
   }

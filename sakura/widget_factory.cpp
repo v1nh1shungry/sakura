@@ -1,4 +1,5 @@
 #include "widget_factory.h"
+#include "utility.h"
 #include <fmt/core.h>
 #include <stdexcept>
 
@@ -49,13 +50,10 @@ WidgetFactory::WidgetFactory(ResourceManager &resources)
 std::unique_ptr<Widget>
 WidgetFactory::from(const nlohmann::json &config,
                     const nlohmann::json &global) const {
-  if (config.is_null()) {
-    return nullptr;
-  }
   std::string type;
-  try {
+  if (exists<nlohmann::json::value_t::string>(config, "class")) {
     type = config["class"].get<std::string>();
-  } catch (...) {
+  } else {
     throw std::runtime_error("empty widget class name");
   }
   if (type == "push_button") {
@@ -72,17 +70,18 @@ WidgetFactory::createPushButton(const nlohmann::json &config,
                                 const nlohmann::json &global) const {
   auto button = new PushButton;
 
-  auto shape = config["shape"];
-  if (shape.is_null()) {
+  if (!exists<nlohmann::json::value_t::object>(config, "shape")) {
     throw std::runtime_error(
         "<Anonymous PushButton>: expects shape configuration");
   }
+  auto shape = config["shape"];
 
+  // TODO: check "left", "top" and so on
   button->shape.setPosition(
       {shape["left"].get<float>(), shape["top"].get<float>()});
   button->shape.setSize(
       {shape["width"].get<float>(), shape["height"].get<float>()});
-  if (!shape["texture"].is_null()) {
+  if (exists<nlohmann::json::value_t::string>(shape, "texture")) {
     button->shape.setTexture(
         resources_.loadTexture(shape["texture"].get<std::string>()).get());
   }
@@ -90,7 +89,7 @@ WidgetFactory::createPushButton(const nlohmann::json &config,
   button->text.setFont(
       *resources_.loadFont(global["font_face"].get<std::string>()));
   button->text.setCharacterSize(global["font_size"].get<int>());
-  if (config["text"].is_string()) {
+  if (exists<nlohmann::json::value_t::string>(config, "text")) {
     button->setText(config["text"].get<std::string>());
   }
 
@@ -106,24 +105,26 @@ WidgetFactory::createDialog(const nlohmann::json &config,
                             const nlohmann::json &global) const {
   auto dialog = new Dialog;
 
-  auto shape = config["shape"];
-  if (shape.is_null()) {
+  if (!exists<nlohmann::json::value_t::object>(config, "shape")) {
     throw std::runtime_error("<Anonymous Dialog>: expects shape configuration");
   }
-  auto text = config["text"];
-  if (text.is_null()) {
+  if (!exists<nlohmann::json::value_t::object>(config, "text")) {
     throw std::runtime_error("<Anonymous Dialog>: expects text configuration");
   }
-  auto name = config["name"];
-  if (name.is_null()) {
+  if (!exists<nlohmann::json::value_t::object>(config, "name")) {
     throw std::runtime_error("<Anonymous Dialog>: expects name configuration");
   }
 
+  auto shape = config["shape"];
+  auto text = config["text"];
+  auto name = config["name"];
+
+  // TODO: check "left", "top" and so on
   dialog->shape.setPosition(
       {shape["left"].get<float>(), shape["top"].get<float>()});
   dialog->shape.setSize(
       {shape["width"].get<float>(), shape["height"].get<float>()});
-  if (!shape["texture"].is_null()) {
+  if (exists<nlohmann::json::value_t::string>(shape, "texture")) {
     dialog->shape.setTexture(
         resources_.loadTexture(shape["texture"].get<std::string>()).get());
   }

@@ -30,7 +30,9 @@ std::string Scene::on(const sf::Event &event) {
       selected = false;
     }
   } else {
-    action = main_dialog->on(event);
+    if (main_dialog) {
+      action = main_dialog->on(event);
+    }
     if (action.empty()) {
       for (auto &widget : widgets) {
         action = widget->on(event);
