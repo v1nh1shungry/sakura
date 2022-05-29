@@ -127,6 +127,7 @@ Here are all commands provided by the system.
 * **@select [first text] [first action] [second text] [second action]**: set up the selectors. Note that `action` should be a script file path.
 * **@if [condition] [conseq] [alt]**: `condition` should be an integer (0 is false, 1 is true). `conseq` and `alt` should be script file path.
 * **@jump [script file path]**: jump to the beginning of the specified script.
+* **@wait**: block the script engine. The next command won't be executed until an event raises (click left button or press space or enter key).
 
 ## Example
 

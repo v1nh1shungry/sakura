@@ -93,6 +93,9 @@ ScriptEngine::ScriptEngine() {
                   std::function<void(ScriptEngine &)>{[this](ScriptEngine &) {
                     this->loadScript(this->popString(), -1);
                   }});
+  registerCommand("wait",
+                  std::function<void(ScriptEngine &)>{
+                      [this](ScriptEngine &) { this->blocked = true; }});
 }
 
 void ScriptEngine::loadScript(const std::string &file_name, std::size_t index) {
